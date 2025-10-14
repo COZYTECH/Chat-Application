@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import authRoutes from "./routes/authRoute.js";
 import path from "path";
 import { connectDb } from "./lib/db.js";
+import { ENV } from "./lib/env.js";
 
 dotenv.config();
 const app = express();
@@ -12,7 +13,7 @@ app.use(express.json());
 app.use("/v1/api/auth", authRoutes);
 
 //making it ready for deployment
-if (process.env.NODE_ENV === "production") {
+if (ENV.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/dist")));
   app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
@@ -21,6 +22,6 @@ if (process.env.NODE_ENV === "production") {
 
 app.listen(process.env.PORT, () => {
   console.log("Server is running ");
-  console.log(`http://localhost:${process.env.PORT}`);
+  console.log(`http://localhost:${ENV.PORT}`);
   connectDb();
 });
