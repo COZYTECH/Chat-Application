@@ -1,6 +1,8 @@
 import User from "../models/userModel.js";
 import bcrypt, { hash } from "bcrypt";
 import { generateToken } from "../../utils.js";
+import { sendWelcomeEmail } from "../emails/emailHandlers.js";
+import { ENV } from "../lib/env.js";
 
 export const signUp = async (req, res) => {
   const { fullName, email, password } = req.body;
@@ -31,14 +33,25 @@ export const signUp = async (req, res) => {
       password: hashedPassword,
     });
     if (newUser) {
+      const savedUser = await newUser.save();
       generateToken(newUser._id, res);
-      await newUser.save();
+
       res.status(200).json({
         _id: newUser._id,
         fullName: newUser.fullName,
         email: newUser.email,
         profilePic: newUser.profilePic,
       });
+      try {
+        await sendWelcomeEmail(
+          savedUser.email,
+          savedUser.fullName,
+          ENV.CLIENT_URL
+        );
+        console.log("email sent");
+      } catch (error) {
+        console.log(error);
+      }
     } else {
       res.status(400).json({ message: "invalid user data" });
     }
