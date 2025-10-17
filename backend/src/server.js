@@ -16,7 +16,7 @@ app.use(cors({ origin: ENV.CLIENT_URL, credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
 app.use("/v1/api/auth", authRoutes);
-app.use("/v1/api/message", messageRoutes);
+app.use("/v1/api/messages", messageRoutes);
 
 //making it ready for deployment
 if (ENV.NODE_ENV === "production") {
