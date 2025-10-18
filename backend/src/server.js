@@ -8,12 +8,12 @@ import { connectDb } from "./lib/db.js";
 import { ENV } from "./lib/env.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-
+import { app, server } from "./lib/socket.js";
 dotenv.config();
-const app = express();
+//const app = express();
 const __dirname = path.resolve();
 app.use(cors({ origin: ENV.CLIENT_URL, credentials: true }));
-app.use(express.json());
+app.use(express.json({ limit: "10mb" }));
 app.use(cookieParser());
 app.use("/v1/api/auth", authRoutes);
 app.use("/v1/api/messages", messageRoutes);
@@ -26,7 +26,13 @@ if (ENV.NODE_ENV === "production") {
   });
 }
 
-app.listen(process.env.PORT, () => {
+// app.listen(process.env.PORT, () => {
+//   console.log("Server is running ");
+//   console.log(`http://localhost:${ENV.PORT}`);
+//   connectDb();
+// });
+
+server.listen(process.env.PORT, () => {
   console.log("Server is running ");
   console.log(`http://localhost:${ENV.PORT}`);
   connectDb();

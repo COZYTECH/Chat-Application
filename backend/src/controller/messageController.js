@@ -1,6 +1,7 @@
 import cloudinary from "../lib/cloudinary.js";
 import User from "../models/userModel.js";
 import Message from "../models/messageModel.js";
+import { getReceiverSocketId, io } from "../lib/socket.js";
 
 export const getAllContacts = async (req, res) => {
   try {
@@ -73,12 +74,11 @@ export const sendMessage = async (req, res) => {
     // This part assumes you have access to the Socket.IO instance (io)
     // and a way to get the receiver's socket ID (e.g., from a user-socket map)
     // Uncomment and implement the following lines as per your setup:
-    // const io = req.app.get("io");
 
-    // const receiverSocketId = getReceiverSocketId(receiverId);
-    // if (receiverSocketId) {
-    //   io.to(receiverSocketId).emit("newMessage", newMessage);
-    // }
+    const receiverSocketId = getReceiverSocketId(receiverId);
+    if (receiverSocketId) {
+      io.to(receiverSocketId).emit("newMessage", newMessage);
+    }
 
     res.status(201).json(newMessage);
   } catch (error) {
