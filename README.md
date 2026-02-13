@@ -61,7 +61,7 @@ sequenceDiagram
 
 ### 📐 Architecture Diagram
 
-![Chat App Architecture](https://user-images.githubusercontent.com/COZYTECH/Chat-Application/main/assets/chat-architecture.png)
+![Chat App Architecture]
 
 > **Description:**
 >
