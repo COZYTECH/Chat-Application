@@ -61,7 +61,7 @@ sequenceDiagram
 
 ### 📐 Architecture Diagram
 
-![Chat App Architecture]
+Chat App Architecture
 
 > **Description:**
 >
